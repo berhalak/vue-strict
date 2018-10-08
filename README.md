@@ -1,5 +1,5 @@
 
-# vuetss
+# vue3
 
 Simple plugin for vue (and vue-cli in progress).
 
