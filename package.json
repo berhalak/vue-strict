@@ -1,0 +1,28 @@
+{
+  "name": "vue3",
+  "version": "0.0.1",
+  "description": "Extract code from vue single file component",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/berhalak/vue3.git"
+  },
+  "author": "berhalak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/berhalak/vue3/issues"
+  },
+  "homepage": "https://github.com/berhalak/vue3#readme",
+  "devDependencies": {
+    "@types/node": "^10.11.4",
+    "typescript": "^3.1.1"
+  },
+  "dependencies": {
+    "vue": "^2.0.0",
+    "vue-router": "^3.0.0"
+  }
+}
