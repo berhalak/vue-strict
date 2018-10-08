@@ -40,7 +40,7 @@ After (in 2 files)
 
 How to install
 
-	npm i vuetss
+	npm i vue3
 	
 Add modify your webpack config
 
