@@ -1,6 +1,6 @@
 {
   "name": "vue3",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Extract code from vue single file component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,6 +13,12 @@
   },
   "author": "berhalak",
   "license": "ISC",
+  "keywords": [
+    "vue",
+    "typescript",
+    "components",
+    "vue-cli"
+  ],
   "bugs": {
     "url": "https://github.com/berhalak/vue3/issues"
   },
