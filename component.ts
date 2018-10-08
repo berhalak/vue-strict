@@ -1,13 +1,6 @@
 import Vue from "vue";
 import VueRouter, { Route } from "vue-router";
 
-export function state(constructor: Function) {
-	constructor.prototype.$isState = true;
-}
-
-export function hasState(constructor: Function) {
-	constructor.prototype.$hasState = true;
-}
 
 export function prop(target: Object, propertyKey: string | symbol) {
 	let s = <any>target;
@@ -29,19 +22,9 @@ export function watch(...name: string[]) {
 	}
 }
 
-export function data() {
-	return function (target: Object, propertyKey: string | symbol) {
-		let s = <any>target;
-		s._alls = s._alls || [];
-		s._alls.push({ target, propertyKey });
-	}
-}
-
-
 export type Constructor<T> = {
 	new(...args: any[]): T;
 }
-
 
 export class Component {
 

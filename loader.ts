@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 
 export function loader(source : string) {
-	// test if has script
     let m = source.match(r);
 	let vue = this.resource.split("?")[0];
 	if (!m) {		
@@ -15,7 +14,7 @@ export function loader(source : string) {
 			let scriptTag = `
 <script>
 import Code from './${fileName}.vue.ts';
-import { bootstrap } from 'vuetss';
+import { bootstrap } from 'vue-code';
 export default bootstrap(Code);
 </script>
 `
