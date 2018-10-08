@@ -54,7 +54,7 @@ Add modify your webpack config
 					loader: 'vue-loader',
 					options: vueLoaderConfig
 				},{
-					loader : 'vuetss'
+					loader : 'vue3'
 				}]
 			},
 
