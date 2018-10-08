@@ -30,7 +30,7 @@ After (in 2 files)
 	</template>
 
 	// component.vue.ts
-	import { Component, prop } from 'vuetss'
+	import { Component, prop } from 'vue3'
 	export default class extends Component {
 		@prop
 		public user : string;		
