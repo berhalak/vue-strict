@@ -1,5 +1,5 @@
 
-# vue3
+# vue-type
 
 Simple plugin for vue (and vue-cli in progress).
 
@@ -30,7 +30,7 @@ After (in 2 files)
 	</template>
 
 	// component.vue.ts
-	import { Component, prop } from 'vue3'
+	import { Component, prop } from 'vue-type'
 	export default class extends Component {
 		@prop
 		public user : string;		
@@ -40,7 +40,7 @@ After (in 2 files)
 
 How to install
 
-	npm i vue3
+	npm i vue-type
 	
 Add modify your webpack config
 
@@ -54,7 +54,7 @@ Add modify your webpack config
 					loader: 'vue-loader',
 					options: vueLoaderConfig
 				},{
-					loader : 'vue3'
+					loader : 'vue-type'
 				}]
 			},
 
