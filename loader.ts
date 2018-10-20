@@ -14,7 +14,7 @@ export function loader(source : string) {
 			let scriptTag = `
 <script>
 import Code from './${fileName}.vue.ts';
-import { bootstrap } from 'vue3';
+import { bootstrap } from 'vue-strict';
 export default bootstrap(Code);
 </script>
 `
