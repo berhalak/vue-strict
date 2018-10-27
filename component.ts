@@ -186,5 +186,10 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 	proper.updated = klass.prototype.updated;
 	proper.beforeUpdate = klass.prototype.beforeUpdate;
 	proper.beforeMount = klass.prototype.beforeMount;
+
+	if (klass.prototype.constructor.bootstrap){
+		klass.prototype.constructor.bootstrap(proper, klass);
+	}
+
 	return proper;
 }
