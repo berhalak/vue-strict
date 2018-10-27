@@ -28,8 +28,19 @@ export type Constructor<T> = {
 	new(...args: any[]): T;
 }
 
+export interface IComponentBase {
+	$emit: (name: string, payload?: any) => void;
+	$set: (obj: any, propKey: string, value: any) => void;
+	$route: Route;
+	$router: VueRouter;
+	$data: any;
+	$value: any;
+	$nextTick: ((clb: () => void) => void | Promise<any>);
+	$refs: any;
+}
+
 /** Base class for vue components in typescript */
-export class Component {
+export class ComponentBase {
 	protected $emit!: (name: string, payload?: any) => void;
 	protected $set!: (obj: any, propKey: string, value: any) => void;
 	protected $route!: Route;
@@ -60,7 +71,7 @@ export class Component {
 }
 
 /** Internal function for changing class based declarations to proper vue component */
-export function bootstrap(klass: Constructor<Component>) {
+export function bootstrap(klass: Constructor<ComponentBase>) {
 	function getPropertyDesc(proto: any, name: string) {
 		while (proto) {
 			let desc = Object.getOwnPropertyDescriptor(proto, name);

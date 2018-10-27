@@ -16,7 +16,7 @@ Before
 		props : ['user'],
 		data() {
 			return {
-				test : 'Hello world'
+				msg : 'Hello world'
 			}
 		}
 	}
@@ -30,11 +30,11 @@ After (in 2 files)
 	</template>
 
 	// component.vue.ts
-	import { Component, prop } from 'vue-strict'
-	export default class extends Component {
+	import { ComponentBase, prop } from 'vue-strict'
+	export default class extends ComponentBase {
 		@prop
 		public user : string;		
-		private test : string = "Hello world";
+		private msg : string = "Hello world";
 	}
 
 
