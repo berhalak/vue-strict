@@ -58,8 +58,25 @@ Add modify your webpack config
 				}]
 			},
 
-2. Vue cli based projects
+2. Vue cli based projects, sample vue.config.js
 
-(comming soon)
+	var path = require('path')
+
+	module.exports = {
+		chainWebpack: config => {
+			config.module
+				.rule('vue')
+				.use('vue-strict')
+				.loader('vue-strict');
+		},
+
+		baseUrl: undefined,
+		outputDir: undefined,
+		assetsDir: undefined,
+		runtimeCompiler: true,
+		productionSourceMap: undefined,
+		parallel: undefined,
+		css: undefined
+	}
 
 
