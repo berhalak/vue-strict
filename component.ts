@@ -1,4 +1,3 @@
-import Vue from "vue";
 import VueRouter, { Route } from "vue-router";
 
 /** Decorates field as vue prop */
@@ -78,16 +77,28 @@ export class ComponentBase {
 
 /** Internal function for changing class based declarations to proper vue component */
 export function bootstrap(klass: Constructor<ComponentBase>) {
-	function getPropertyDesc(proto: any, name: string) {
-		while (proto) {
-			let desc = Object.getOwnPropertyDescriptor(proto, name);
-			if (desc) return desc;
-			proto = Object.getPrototypeOf(proto);
+
+	const properties: PropertyDescriptorMap = {};
+
+	let chain = klass.prototype;
+
+	while (chain.constructor.name != 'Object') {
+		const descriptors = Object.getOwnPropertyDescriptors(chain);
+		for (const name in descriptors) {
+			if (!properties[name]) {
+				properties[name] = descriptors[name];
+			}
 		}
+		chain = Object.getPrototypeOf(chain);
 	}
 
-	let name = klass.prototype.name;
 	let proper: any = {};
+
+	if (klass.prototype.beforeBootstrap) {
+		klass.prototype.beforeBootstrap(proper);
+	}
+
+
 	let anyKlass = klass as any;
 	let propsNames: any = [];
 	if (klass.prototype.props && klass.prototype.props.length) {
@@ -117,9 +128,12 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 			data.init();
 		}
 
+		data = Object.assign({}, data);
+
 		for (let p of propsNames) {
 			delete data[p];
 		}
+
 		return data;
 	};
 
@@ -127,13 +141,13 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 	proper.components = anyKlass.prototype.constructor.components;
 
 	let methods: any = {};
-	let excluded = ['constructor', 'created', 'mounted', 'beforeCreate', 'updated', 'beforeUpdate', 'data'];
+	let excluded = ['constructor', 'created', 'mounted', 'beforeCreate', 'updated', 'beforeUpdate', 'data', 'afterBootstrap', 'beforeBootstrap'];
 	if (klass.prototype.watches) {
 		excluded = excluded.concat(klass.prototype.watches.map((x: any) => x.propertyKey));
 	}
 
-	for (let m in klass.prototype) {
-		let desc = getPropertyDesc(proto, m);
+	for (let m in properties) {
+		const desc = properties[m];
 		if (desc !== undefined && desc.get !== undefined) {
 			proper.computed = proper.computed || {};
 			proper.computed[m] = {
@@ -193,6 +207,10 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 
 	if (klass.prototype.constructor.bootstrap) {
 		klass.prototype.constructor.bootstrap(proper, klass);
+	}
+
+	if (klass.prototype.afterBootstrap) {
+		klass.prototype.afterBootstrap(proper);
 	}
 
 	return proper;
