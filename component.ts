@@ -53,6 +53,12 @@ export class ComponentBase {
 
 	}
 
+	public data() {
+		return {
+
+		}
+	}
+
 	protected beforeCreate() {
 
 	}
@@ -100,39 +106,18 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 			}
 		}
 	}
-	proper.data = function () {
-		let context = Object.assign({}, this.$props);
-		let props = Object.assign({}, this.$props);
 
-		for (let name of propsNames) {
-			Object.defineProperty(context, name, {
-				get() {
-					return props[name];
-				},
-				set(v) {
-					return true;
-				}
-			})
-		}
-		let data = klass.call(context);
-		data = Object.assign({}, data);
-		for (let p of propsNames) {
-			delete data[p];
-		}
-		return data;
-	};
-
+	proper.data = klass.prototype.data;
 	let proto = klass.prototype;
 	proper.components = anyKlass.prototype.constructor.components;
 
 	let methods: any = {};
-	let excluded = ['constructor', 'created', 'mounted', 'beforeCreate', 'updated', 'beforeUpdate'];
+	let excluded = ['constructor', 'created', 'mounted', 'beforeCreate', 'updated', 'beforeUpdate', 'data'];
 	if (klass.prototype.watches) {
 		excluded = excluded.concat(klass.prototype.watches.map((x: any) => x.propertyKey));
 	}
 
 	for (let m in klass.prototype) {
-		let protoStart = proto;
 		let desc = getPropertyDesc(proto, m);
 		if (desc !== undefined && desc.get !== undefined) {
 			proper.computed = proper.computed || {};
@@ -141,7 +126,7 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 					if (desc !== undefined && desc.get !== undefined)
 						return desc.get.call(this);
 				},
-				set(value: any) {				
+				set(value: any) {
 					if (desc !== undefined && desc.set !== undefined) {
 						desc.set.call(this, value);
 					} else {
@@ -161,7 +146,7 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 	if (klass.prototype.created) {
 		proper.created = klass.prototype.created;
 	}
-	
+
 	if (klass.prototype.watches) {
 		proper.watch = proper.watch || {};
 		let toWatchList = proto.watches.multi((x: any) => x.name);
@@ -186,8 +171,12 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 	proper.updated = klass.prototype.updated;
 	proper.beforeUpdate = klass.prototype.beforeUpdate;
 	proper.beforeMount = klass.prototype.beforeMount;
+	proper.beforeDestroy = klass.prototype.beforeDestroy;
+	if (klass.prototype.render) {
+		proper.render = klass.prototype.render;
+	}
 
-	if (klass.prototype.constructor.bootstrap){
+	if (klass.prototype.constructor.bootstrap) {
 		klass.prototype.constructor.bootstrap(proper, klass);
 	}
 
