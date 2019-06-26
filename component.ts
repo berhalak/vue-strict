@@ -107,7 +107,22 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 		}
 	}
 
-	proper.data = klass.prototype.data;
+	proper.data = function () {
+		let props = Object.assign({}, this.$props);
+		let data: any = new klass();
+		Object.assign(data, props);
+		let result = data.data ? data.data() : {};
+		Object.assign(data, result);
+		if (data.init && typeof data.init == 'function') {
+			data.init();
+		}
+
+		for (let p of propsNames) {
+			delete data[p];
+		}
+		return data;
+	};
+
 	let proto = klass.prototype;
 	proper.components = anyKlass.prototype.constructor.components;
 
