@@ -23,6 +23,18 @@ export function watch(...name: string[]) {
 	}
 }
 
+export function provides(target: Object, propertyKey: string | symbol) {
+	let s = <any>target;
+	s._providers = s._providers || [];
+	s._providers.push(propertyKey);
+}
+
+export function inject(target: Object, propertyKey: string | symbol) {
+	let s = <any>target;
+	s._injections = s._providers || [];
+	s._injections.push(propertyKey);
+}
+
 export type Constructor<T> = {
 	new(...args: any[]): T;
 }
@@ -201,6 +213,30 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 	proper.beforeUpdate = klass.prototype.beforeUpdate;
 	proper.beforeMount = klass.prototype.beforeMount;
 	proper.beforeDestroy = klass.prototype.beforeDestroy;
+
+
+	if (klass.prototype.provide) {
+		proper.provide = klass.prototype.provide;
+	} else {
+		const providers = klass.prototype._providers;
+		if (providers && providers.length) {
+			proper.provide = function () {
+				const result: any = {};
+				for (let key of providers) {
+					result[key] = this[key];
+				}
+				return result;
+			}
+		}
+	}
+
+
+	const injectors = klass.prototype._injectors;
+
+	if (injectors && injectors.length) {
+		proper.inject = injectors;
+	}
+
 	if (klass.prototype.render) {
 		proper.render = klass.prototype.render;
 	}
