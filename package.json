@@ -25,9 +25,9 @@
   },
   "homepage": "https://github.com/berhalak/vue-strict#readme",
   "devDependencies": {
-    "@types/node": "^10.11.4",
-    "typescript": "^3.5.2",
-    "vue": "^2.6.10",
-    "vue-router": "^3.0.6"
+    "@types/node": "^13.1.6",
+    "typescript": "^3.7.4",
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.3"
   }
 }
