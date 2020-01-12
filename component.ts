@@ -78,7 +78,15 @@ export class ComponentBase {
 
 	}
 
+	protected beforeDestroy() {
+
+	}
+
 	protected updated() {
+
+	}
+
+	protected beforeMount() {
 
 	}
 
