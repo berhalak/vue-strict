@@ -60,37 +60,37 @@ export class ComponentBase {
 	protected $value: any;
 	protected $nextTick!: ((clb: () => void) => void | Promise<any>);
 	protected $refs: any;
-	protected created() {
+	created() {
 
 	}
 
-	public data() {
+	data() {
 		return {
 
 		}
 	}
 
-	protected beforeCreate() {
+	beforeCreate() {
 
 	}
 
-	protected beforeUpdate() {
+	beforeUpdate() {
 
 	}
 
-	protected beforeDestroy() {
+	beforeDestroy() {
 
 	}
 
-	protected updated() {
+	updated() {
 
 	}
 
-	protected beforeMount() {
+	beforeMount() {
 
 	}
 
-	protected mounted() {
+	mounted() {
 
 	}
 }

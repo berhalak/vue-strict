@@ -1,6 +1,6 @@
 {
   "name": "vue-strict",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Extract code from vue single file component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
