@@ -11,38 +11,64 @@ interface View {
 	full: string;
 }
 
-function generate(folder: string, subFolder: string) {
-	let components = path.join(folder, subFolder);
-	let lines: View[] = [];
-	if (fs.existsSync(components)) {
 
-		for (let file of fs.readdirSync(components)) {
+function generate(folder: string, fileFolder: string, viewsFolder: string, pageFolder: string, flat: boolean) {
+	let viewsFolderPath = path.join(folder, viewsFolder);
+	let lines: View[] = [];
+	if (fs.existsSync(viewsFolderPath)) {
+		for (let file of fs.readdirSync(viewsFolderPath)) {
 			if (file.endsWith(".vue")) {
 				let name = path.basename(file, ".vue");
-				let relative = `./${subFolder}/${file}`;
+				let fullViewPath = path.join(folder, viewsFolder, file);
+				let relative = path.relative(fileFolder, fullViewPath).split("\\").join("/");
+				if (!relative.startsWith(".")) {
+					relative = "./" + relative;
+				}
 				let view: View = {
 					name,
 					relative,
-					full: path.join(folder, relative)
+					full: relative
 				};
 				lines.push(view);
 			}
 		}
 	}
+
+	// end on pages
+	if (folder.endsWith(pageFolder) || flat) {
+		return lines;
+	}
+
+	// safe net, don't go outside package.json
+	let parent = path.resolve(path.join(folder, ".."));
+	if (fs.existsSync(path.join(parent, "package.json"))) {
+		return lines;
+	}
+
+	let fromParent = generate(parent, fileFolder, viewsFolder, pageFolder, flat);
+
+	lines = [...lines, ...fromParent];
+
 	return lines;
 }
 
 function write(view: View[]) {
 	let lines: string[] = [];
+	let imports: string[] = [];
+
+	let hash: any = {};
 
 	for (let v of view) {
 		const relative = v.relative;
 		const name = v.name;
-		lines.push(`import ${name} from "${relative}";`);
+		if (name in hash) continue;
+		hash[name] = name;
+
+		imports.push(`import ${name} from "${relative}";`);
 		lines.push(`proper.components["${name}"] = ${name};`)
 	}
 
-	return lines.join("\r\n");
+	return [...imports, ...lines].join("\r\n");
 }
 
 export function transform(
@@ -59,7 +85,7 @@ export function transform(
 			addDependency(codeFullPath);
 			let text = "";
 			if (options.auto) {
-				const components = generate(path.dirname(vue), options.auto);
+				const components = generate(path.dirname(vue), path.dirname(vue), options.auto, options.pages || "pages", options.flat);
 				text = write(components);
 				components.forEach(x => addDependency(x.full));
 			}
@@ -76,6 +102,10 @@ export default proper;
 			source = source + scriptTag;
 		}
 
+	}
+	if (options.log) {
+		console.log("// " + resource);
+		console.log(source);
 	}
 	return source;
 }

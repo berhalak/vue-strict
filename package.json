@@ -1,12 +1,13 @@
 {
   "name": "vue-strict",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Extract code from vue single file component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "deploy": "tsc && npm publish"
+    "deploy": "tsc && npm publish",
+    "test": "ts-node ./test/test.ts"
   },
   "repository": {
     "type": "git",
