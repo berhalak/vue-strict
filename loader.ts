@@ -113,6 +113,6 @@ export function loader(source: string) {
 	return transform(
 		this.resource,
 		source,
-		getOptions(this),
+		getOptions(this) || {},
 		x => this.addDependency(x));
 };
