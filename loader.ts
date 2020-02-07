@@ -3,7 +3,6 @@ let r = new RegExp("<script>.*</script>", "s");
 import fs from 'fs';
 import path from 'path';
 import { getOptions } from 'loader-utils';
-import { loader } from 'webpack';
 
 interface View {
 	name: string;
@@ -110,7 +109,7 @@ export default proper;
 	return source;
 }
 
-export function loader(this: loader.LoaderContext, source: string) {
+export function loader(source: string) {
 	return transform(
 		this.resource,
 		source,
