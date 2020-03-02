@@ -75,11 +75,15 @@ export function transform(
 	source: string,
 	options: any,
 	addDependency: (x: string) => void) {
-	let m = source.match(r);
 	let vue = resource.split("?")[0];
+	if (vue.includes("node_modules")) {
+		return source;
+	}
+	let m = source.match(r);
 	if (!m) {
 		let fileName = path.basename(vue, '.vue');
 		let codeFullPath = path.join(path.dirname(vue), fileName + ".vue.ts");
+
 		if (fs.existsSync(codeFullPath)) {
 			addDependency(codeFullPath);
 			let text = "";
