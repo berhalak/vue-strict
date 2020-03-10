@@ -94,20 +94,20 @@ export function transform(
 			}
 
 			let file = '';
+			let part = '';
 
 			if (options.path) {
 				file = vue;
 				file = file.replace(options.path, ".");
 				file = file.split("\\").join("/");
-				file = `proper.__path = '${file}';`
+				part = `proper.__path = '${file}';`
 			}
 			let scriptTag = `
 <script>
 import Code from './${fileName}.vue.ts';
 import { bootstrap } from 'vue-strict';
-let proper = bootstrap(Code);
+let proper = bootstrap(Code, '${file}');
 proper.components = proper.components || {};
-${file}
 ${text}
 export default proper;
 </script>

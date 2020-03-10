@@ -96,7 +96,7 @@ export class ComponentBase {
 }
 
 /** Internal function for changing class based declarations to proper vue component */
-export function bootstrap(klass: Constructor<ComponentBase>) {
+export function bootstrap(klass: Constructor<ComponentBase>, path: string) {
 
 	const properties: PropertyDescriptorMap = {};
 
@@ -112,7 +112,9 @@ export function bootstrap(klass: Constructor<ComponentBase>) {
 		chain = Object.getPrototypeOf(chain);
 	}
 
-	let proper: any = {};
+	let proper: any = {
+		__path: path
+	};
 
 	if (klass.prototype.beforeBootstrap) {
 		klass.prototype.beforeBootstrap(proper);
