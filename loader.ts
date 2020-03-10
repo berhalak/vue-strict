@@ -92,12 +92,22 @@ export function transform(
 				text = write(components);
 				components.forEach(x => addDependency(x.full));
 			}
+
+			let file = '';
+
+			if (options.path) {
+				file = vue;
+				file = file.replace(options.path, ".");
+				file = file.split("\\").join("/");
+				file = `proper.__path = '${file}';`
+			}
 			let scriptTag = `
 <script>
 import Code from './${fileName}.vue.ts';
 import { bootstrap } from 'vue-strict';
 let proper = bootstrap(Code);
 proper.components = proper.components || {};
+${file}
 ${text}
 export default proper;
 </script>
