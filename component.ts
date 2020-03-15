@@ -200,7 +200,8 @@ export function bootstrap(klass: Constructor<ComponentBase>, path: string) {
 
 	if (klass.prototype.watches) {
 		proper.watch = proper.watch || {};
-		let toWatchList = proto.watches.multi((x: any) => x.name);
+		const watches = (proto.watches || []) as { name: string }[];
+		let toWatchList = watches.map((x: any) => x.name);
 		for (let toWatch of toWatchList) {
 			let handler = {
 				handler: function (n: any, o: any) {
