@@ -7,15 +7,8 @@ export function prop(target: Object, propertyKey: string | symbol) {
 	s.props.push(propertyKey);
 }
 
-/** Defines computed property, deprected all getters and setters are computed */
-export function computed(target: Object, propertyKey: string | symbol) {
-	let s = <any>target;
-	s.computed = s.computed || [];
-	s.computed.push({ target, propertyKey });
-}
-
 /** Declares method as watch handler with options: deep, imidiate */
-export function watch(...name: string[]) {
+export function watch(name: string) {
 	return function (target: Object, propertyKey: string | symbol) {
 		let s = <any>target;
 		s.watches = s.watches || [];
